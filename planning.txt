@@ -1,0 +1,25 @@
+- Going to use same idea as typing test where we take samples from a file,
+but in this case it'll be code snippets instead of words
+  - I'm prob going to use different files for each programming language
+  If we want to have more than one code snippet for each language we need
+  to figure out how to store/get different code snippets in each language
+  file.
+    - But, to start and to build the base code, I'm going to only use one
+    code snippet for each language and I can figure out how to do the
+    above later
+
+- I will prob use rand library to choose which language to pick a snippet
+from and then use if statements to choose the snippet, and also to set the
+language variable to check if the user guessed the correct language
+
+- All we need after that is to display the code snippet on screen and
+get the users guess as input, then check that agains the language var
+and if they got it right award them points and then start with a new
+snippet.
+
+- To expand this, first I can add a timer limit and different gamemode
+selections, as well as actually track the users points in a file.
+
+- The end goal is to have this on a website, so I will eventually have
+to port this code onto a website or convert it into a language built for
+web development (I have no idea how web development works).

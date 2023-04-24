@@ -1,0 +1,21 @@
+#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    // initialize random seed
+    srand (time(NULL));
+
+    cout << "Random value between 0 - 9:\t";
+    int randomInteger10 = rand() % 10 + 1;
+    cout << randomInteger10 << endl;
+
+    cout << "Random value between 0 - 99:\t";
+    int randomInteger100 = rand() % 100;
+    cout << randomInteger100 << endl;
+
+    cout << "Random value between 1 - 100:\t";
+    int randomInteger = rand() % 100 + 1;
+    cout << randomInteger << endl;
+
+    return 0;
+}

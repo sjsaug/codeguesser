@@ -1,0 +1,6 @@
+function getIntoAnArgument() {
+    var args = arguments.slice();
+    args.forEach(function(arg) {
+        console.log(arg);
+    });
+}
