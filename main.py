@@ -35,23 +35,27 @@ def print_snippet():
     print(*code_lines, sep='\n')
 
 def check_answer():
-    user_answer = input("What is the language of the code snippet?\n")
+    user_answer = input("What language was that code snippet written in? (options : python | cpp | js)\n")
     if user_answer == language:
-        print("You got it right!")
+        print("Correct, %s was the correct language!" % language)
     else:
-        print("You got it wrong")
+        print("You got it wrong. The correct answer was %s" % language)
 
 
 def timer(timer):
     #start timer when displaying code block so user has limited time to read the available snippet, thus making it more challenging and difficult for the user to cheat (they can still cheat by doing stuff like taking a photo, but we can set a timer for how long they have to answer as well)
-    print("You have " + str(timer) + " seconds to view the snippet\n")
-    time.sleep(timer)
+    while 0 < timer:
+        sys.stdout.write("\rYou have %d seconds left to view the snippet" % timer)
+        sys.stdout.flush()
+        timer -= 1
+        time.sleep(1)
+
     os.system("cls" if sys.platform == "win32" else "clear")
 
 def main():
     get_rand_language_path()
     print_snippet()
-    timer(10)
+    timer(5) #in future we can create a select system where either the user selects a preset time or sets a custom one
     check_answer()
 
 if __name__ == "__main__":
