@@ -1,5 +1,8 @@
 # refer to planning.txt
 import random
+import time
+import os
+import sys
 
 def get_rand_language_path():
     possible_languages = ['python', 'cpp', 'js']
@@ -38,9 +41,17 @@ def check_answer():
     else:
         print("You got it wrong")
 
+
+def timer(timer):
+    #start timer when displaying code block so user has limited time to read the available snippet, thus making it more challenging and difficult for the user to cheat (they can still cheat by doing stuff like taking a photo, but we can set a timer for how long they have to answer as well)
+    print("You have " + str(timer) + " seconds to view the snippet\n")
+    time.sleep(timer)
+    os.system("cls" if sys.platform == "win32" else "clear")
+
 def main():
     get_rand_language_path()
     print_snippet()
+    timer(10)
     check_answer()
 
 if __name__ == "__main__":
