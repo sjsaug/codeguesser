@@ -30,7 +30,7 @@ def get_snippet(path):
 
 
 def print_snippet():
-    print("What language is the snippet below written in?\n")
+    print("What language is the code snippet below written in?\n")
     code_lines = get_snippet(path)
     print(*code_lines, sep='\n')
 
@@ -52,7 +52,12 @@ def timer(timer):
 
     os.system("cls" if sys.platform == "win32" else "clear")
 
+def fix_mac():
+    if sys.platform == "darwin":
+        os.system('stty erase "^H"')
+
 def main():
+    fix_mac()
     get_rand_language_path()
     print_snippet()
     timer(5) #in future we can create a select system where either the user selects a preset time or sets a custom one
