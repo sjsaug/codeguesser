@@ -1,0 +1,28 @@
+class Example
+{
+    ctor
+}
+
+class Program
+{
+    static void Main()
+    {
+    }
+}
+
+Output
+
+class Example
+{
+    public Example()
+    {
+
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+    }
+}
