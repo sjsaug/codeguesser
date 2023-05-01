@@ -5,7 +5,7 @@ import os
 import sys
 
 def get_rand_language_path():
-    possible_languages = ['python', 'cpp', 'js']
+    possible_languages = ['python', 'cpp', 'js', 'react', 'css', 'rust', 'c#']
     global language
     global path
     language = random.choice(possible_languages)
@@ -16,6 +16,14 @@ def get_rand_language_path():
             path = './cpp_snippet.txt'
         case "js":
             path = './js_snippet.txt'
+        case "react":
+            path = './react_snippet.txt'
+        case "css":
+            path = './css_snippet.txt'
+        case "rust":
+            path = './rust_snippet.txt'
+        case "c#":
+            path = './c#_snippet.txt'
 
     return path
 
@@ -35,7 +43,7 @@ def print_snippet():
     print(*code_lines, sep='\n')
 
 def check_answer():
-    user_answer = input("What language was that code snippet written in? (options : python | cpp | js)\n")
+    user_answer = input("What language was that code snippet written in? (options : python | cpp | js | react | css | rust | c#)\n")
     if user_answer == language:
         print("Correct, %s was the correct language!" % language)
     else:
