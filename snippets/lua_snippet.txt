@@ -1,0 +1,9 @@
+  if ( player.guess > number ) then
+    print("Too high")
+  elseif ( player.guess < number) then
+    print("Too low")
+  else
+    print("That's right!")
+    os.exit()
+  end
+end

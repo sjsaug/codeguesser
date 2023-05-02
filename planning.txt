@@ -23,3 +23,5 @@ selections, as well as actually track the users points in a file.
 - The end goal is to have this on a website, so I will eventually have
 to port this code onto a website or convert it into a language built for
 web development (I have no idea how web development works).
+
+- Need to add a way for the user to easily differentiate the code snippets from the prompts, making it coloured seems good but maybe a gui will be better, except that defeats the purpose of it being in the terminal and need to implement above feature ideas before moving to gui
