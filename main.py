@@ -4,6 +4,7 @@ import time
 import os
 import sys
 import configparser
+from colorama import Fore, Style
 
 def get_rand_language_path():
     possible_languages = ['python', 'cpp', 'js', 'react', 'css', 'rust', 'c#', 'go', 'lua', 'php']
@@ -50,7 +51,28 @@ def get_snippet(path):
 def print_snippet():
     print("What language is the code snippet below written in?\n")
     code_lines = get_snippet(path)
-    print(*code_lines, sep='\n')
+    match snippet_color:
+        case "yellow":
+            text_color = Fore.YELLOW
+        case "blue":
+            text_color = Fore.BLUE
+        case "green":
+            text_color = Fore.GREEN
+        case "red":
+            text_color = Fore.RED
+        case "cyan":
+            text_color = Fore.CYAN
+        case "magenta":
+            text_color = Fore.MAGENTA
+        case "black":
+            text_color = Fore.BLACK
+        case "white":
+            text_color = Fore.WHITE
+
+    for elem in code_lines:
+        print(text_color + elem)
+    print(Style.RESET_ALL)
+    #print(*code_lines, sep='\n') #alternative method to above but compatability issues with printing colored text
 
 def check_answer():
     user_answer = input("What language was that code snippet written in? (options : python | cpp | js | react | css | rust | c# | go | lua | php)\n")
@@ -85,17 +107,23 @@ def read_config():
     dev_options = dict(configParser.items('Dev'))
     settings_options = dict(configParser.items('Settings'))
 
+    #FIXES
     global is_iterm2
     is_iterm2 = fixes_options['is_iterm2']
 
+    #DEV
     global enable_debugging
     enable_debugging = dev_options['enable_debugging']
 
+    #SETTINGS
     global viewing_lenght
     viewing_lenght = settings_options['viewing_timer_lenght']
 
     global num_turns
     num_turns = settings_options['number_of_turns']
+
+    global snippet_color
+    snippet_color = settings_options['snippet_text_color']
 
 def main():
     read_config()
