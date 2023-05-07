@@ -5,6 +5,7 @@ import os
 import sys
 import configparser
 from colorama import Fore, Style
+from cryptography.fernet import Fernet
 
 def get_rand_language_path():
     possible_languages = ['python', 'cpp', 'js', 'react', 'css', 'rust', 'c#', 'go', 'lua', 'php']
@@ -49,6 +50,7 @@ def get_snippet(path):
 
 
 def print_snippet():
+    global text_color #make unbound false flag in certain editors go away
     print("What language is the code snippet below written in?\n")
     code_lines = get_snippet(path)
     match snippet_color:
@@ -75,11 +77,16 @@ def print_snippet():
     #print(*code_lines, sep='\n') #alternative method to above but compatability issues with printing colored text
 
 def check_answer():
+    global pts_gained
+    pts_gained = 0
     user_answer = input("What language was that code snippet written in? (options : python | cpp | js | react | css | rust | c# | go | lua | php)\n")
     if user_answer == language:
+        pts_gained+=5
         print("Correct, %s was the correct language!" % language)
     else:
+        pts_gained-=3
         print("You got it wrong. The correct answer was %s" % language)
+
 
 
 def timer(timer):
@@ -125,6 +132,59 @@ def read_config():
     global snippet_color
     snippet_color = settings_options['snippet_text_color']
 
+
+def encrypt(key):
+    global encrypted_data
+
+    f = Fernet(key)
+
+    #opening file to encrypt
+    with open('points.txt', 'rb') as pts_file:
+        unencrypted_data = pts_file.read()
+    
+    #encrypting and writing encrypted data
+    encrypted_data = f.encrypt(unencrypted_data)
+    with open('points.txt', 'wb') as pts_file:
+        pts_file.write(encrypted_data)
+
+def decrypt(key):
+    global encrypted_data
+    f = Fernet(key)
+    #open file again to retrieve encrypted data
+    with open('points.txt', 'rb') as pts_file:
+        encrypted_data = pts_file.read()
+
+    #decrypting and writing decrypted data
+    decrypted_data = f.decrypt(encrypted_data)
+    with open('points.txt', 'wb') as pts_file:
+        pts_file.write(decrypted_data)
+    
+
+def points_system():
+    key = Fernet.generate_key()
+    
+    with open('points.txt', 'r+') as pts_file:
+        total_pts = pts_file.read()
+
+
+    #decrypt pts
+    #if total_pts == 0 or "0":
+        #encrypt(key)
+    #decrypt(key)
+
+    #writing pts to txt
+    global pts_gained    
+    total_pts_int = int(total_pts)
+    total_pts_int+=pts_gained
+        
+    with open('points.txt', 'w+') as pts_file:
+        pts_file.write(str(total_pts_int))
+
+    #encrypting pts
+    #encrypt(key)
+    
+
+
 def main():
     read_config()
     fix_mac()
@@ -133,6 +193,7 @@ def main():
     if viewing_lenght != "infinite": #we can just check if it's a str but doing this to make it easier to understand what this code does
         timer(int(viewing_lenght))
     check_answer()
+    points_system()
 
 
 def startup():

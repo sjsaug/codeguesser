@@ -8,10 +8,23 @@ but in this case it'll be code snippets instead of words
     code snippet for each language and I can figure out how to do the
     above later
 
-- Award user points (and track the points in a file) for correct guess and start a new test (restart main)
-
 - The end goal is to have this on a website, so I will eventually have
 to port this code onto a website or convert it into a language built for
 web development (I have no idea how web development works).
 
-- Need to add a way for the user to easily differentiate the code snippets from the prompts, making it coloured seems good but maybe a gui will be better, except that defeats the purpose of it being in the terminal and need to implement above feature ideas before moving to gui
+Need to make snippets shorter so they fit in most standard terminals without having to scroll up..
+maybe this could be implemented with indentation-style text (maybe making it a smaller font)
+
+
+- Award user points (and track the points in a file) for correct guess and start a new test (restart main)
+
+Have some new ideas for user points, be for theme we need a welcome page
+  - Need a welcome page with options to 1. check points or 2. start a test
+  - I want this because firstly it's functional but it will allow us to
+  encrypt the points to discourage someone from editing them (of course, you can make a script to edit your points but this feature is targeted to less technical users)
+  - We can add encryption before this, however, and just display the points before each test starts,
+  it would just be nicer to have the option to only check your points (and you can't just open the file if it's encrypted)
+
+For a very basic points system we can award +5 pts for a correct answer and -3 pts for an incorrect answer
+  - I do want to improve this later on though with mathematical calculations and giving snippets difficulty
+  ratings.
