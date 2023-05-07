@@ -62,6 +62,7 @@ def check_answer():
 
 def timer(timer):
     #start timer when displaying code block so user has limited time to read the available snippet, thus making it more challenging and difficult for the user to cheat (they can still cheat by doing stuff like taking a photo, but we can set a timer for how long they have to answer as well)
+
     while 0 < timer:
         sys.stdout.write("\rYou have %d seconds left to view the snippet" % timer)
         sys.stdout.flush()
@@ -82,6 +83,7 @@ def read_config():
     configParser.read(configFilePath)
     fixes_options = dict(configParser.items('Fixes'))
     dev_options = dict(configParser.items('Dev'))
+    settings_options = dict(configParser.items('Settings'))
 
     global is_iterm2
     is_iterm2 = fixes_options['is_iterm2']
@@ -89,13 +91,35 @@ def read_config():
     global enable_debugging
     enable_debugging = dev_options['enable_debugging']
 
+    global viewing_lenght
+    viewing_lenght = settings_options['viewing_timer_lenght']
+
+    global num_turns
+    num_turns = settings_options['number_of_turns']
+
 def main():
     read_config()
     fix_mac()
     get_rand_language_path()
     print_snippet()
-    timer(10) #in future we can create a select system where either the user selects a preset time or sets a custom one
+    if viewing_lenght != "infinite": #we can just check if it's a str but doing this to make it easier to understand what this code does
+        timer(int(viewing_lenght))
     check_answer()
 
-if __name__ == "__main__":
-    main()
+
+def startup():
+    read_config()
+    global num_turns
+    num_curr_turns = 0
+    if num_turns == "infinite":
+        while True:
+            if __name__ == "__main__":
+                main()
+    if num_turns != "infinite":
+        while num_curr_turns < int(num_turns):
+            if __name__ == "__main__":
+                num_curr_turns += 1
+                main()
+
+
+startup()

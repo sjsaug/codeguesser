@@ -8,17 +8,7 @@ but in this case it'll be code snippets instead of words
     code snippet for each language and I can figure out how to do the
     above later
 
-- I will prob use rand library to choose which language to pick a snippet
-from and then use if statements to choose the snippet, and also to set the
-language variable to check if the user guessed the correct language
-
-- All we need after that is to display the code snippet on screen and
-get the users guess as input, then check that agains the language var
-and if they got it right award them points and then start with a new
-snippet.
-
-- To expand this, first I can add a timer limit and different gamemode
-selections, as well as actually track the users points in a file.
+- Award user points (and track the points in a file) for correct guess and start a new test (restart main)
 
 - The end goal is to have this on a website, so I will eventually have
 to port this code onto a website or convert it into a language built for
