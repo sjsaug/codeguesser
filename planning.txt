@@ -15,22 +15,9 @@ web development (I have no idea how web development works).
 Need to make snippets shorter so they fit in most standard terminals without having to scroll up..
 maybe this could be implemented with indentation-style text (maybe making it a smaller font)
 
-
-- Award user points (and track the points in a file) for correct guess and start a new test (restart main)
-
-Have some new ideas for user points, be for theme we need a welcome page
-  - Need a welcome page with options to 1. check points or 2. start a test
-  - I want this because firstly it's functional but it will allow us to
-  encrypt the points to discourage someone from editing them (of course, you can make a script to edit your points but this feature is targeted to less technical users)
-  - We can add encryption before this, however, and just display the points before each test starts,
-  it would just be nicer to have the option to only check your points (and you can't just open the file if it's encrypted)
+Would be nice to have a welcome page with options to 1. check points or 2. start a test
 
 For a very basic points system we can award +5 pts for a correct answer and -3 pts for an incorrect answer
   - I do want to improve this later on though with mathematical calculations and giving snippets difficulty
   ratings.
-
-Encryption ideas (since it's not really working)
-  - Check if pts string is encrypted
-    - If not encrypted, encrypt it for first time
-  - Decrypt string and add new pts
-  - Encrypt again and store in file
+  - I need to make it so if you have 1 point it won't subtract 2 points so we won't go into the negatives as well as if as 0 points don't subtract any more points

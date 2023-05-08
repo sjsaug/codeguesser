@@ -5,15 +5,18 @@ import os
 import sys
 import configparser
 from colorama import Fore, Style
-from cryptography.fernet import Fernet
+import binascii
+
+def debug_print(var):
+    print("[DEBUG] " + var)
 
 def get_rand_language_path():
     possible_languages = ['python', 'cpp', 'js', 'react', 'css', 'rust', 'c#', 'go', 'lua', 'php']
     global language
     global path
     language = random.choice(possible_languages)
-    if enable_debugging == "True":
-        print("Chosen language : " + language)
+    if enable_debugging:
+        debug_print("Chosen language : " + language)
 
     match language:
         case "python":
@@ -103,8 +106,8 @@ def timer(timer):
 def fix_mac():
     if sys.platform == "darwin" and is_iterm2 == "True":
         os.system('stty erase "^H"')
-        if enable_debugging == "True":
-            print("stty erase has been run")
+        if enable_debugging:
+            debug_print("stty erase has been run")
 
 def read_config():
     configParser = configparser.RawConfigParser()
@@ -119,8 +122,13 @@ def read_config():
     is_iterm2 = fixes_options['is_iterm2']
 
     #DEV
+    global enable_debugging_check
     global enable_debugging
-    enable_debugging = dev_options['enable_debugging']
+    enable_debugging_check = dev_options['enable_debugging']
+    if enable_debugging_check == "True":
+        enable_debugging = True
+    else:
+        enable_debugging = False
 
     #SETTINGS
     global viewing_lenght
@@ -133,67 +141,49 @@ def read_config():
     snippet_color = settings_options['snippet_text_color']
 
 
-def encrypt(key):
-    global encrypted_data
-
-    f = Fernet(key)
-
-    #opening file to encrypt
-    with open('points.txt', 'rb') as pts_file:
-        unencrypted_data = pts_file.read()
-    
-    #encrypting and writing encrypted data
-    encrypted_data = f.encrypt(unencrypted_data)
-    with open('points.txt', 'wb') as pts_file:
-        pts_file.write(encrypted_data)
-
-def decrypt(key):
-    global encrypted_data
-    f = Fernet(key)
-    #open file again to retrieve encrypted data
-    with open('points.txt', 'rb') as pts_file:
-        encrypted_data = pts_file.read()
-
-    #decrypting and writing decrypted data
-    decrypted_data = f.decrypt(encrypted_data)
-    with open('points.txt', 'wb') as pts_file:
-        pts_file.write(decrypted_data)
-    
-def generate_and_return_key():
-    key = Fernet.generate_key()
-    with open('points.key', 'wb') as key_file:
-        key_file.write(key)
-
-    return open('points.key', 'rb').read()
-
 def points_system():
     
-    key = generate_and_return_key()
-    
     with open('points.txt', 'r+') as pts_file:
-        total_pts = pts_file.read()
-
+        total_pts_hex = pts_file.read()
+    if enable_debugging:
+        debug_print("Hex : " + total_pts_hex.strip())
+        debug_print("Lenght of hex (unstripped) : " + str(len(total_pts_hex)))
+        debug_print("Lenght of hex (stripped) : " + str(len(total_pts_hex.strip())))
 
     #decrypt pts
-    #if isinstance(total_pts, int):
-    encrypt(key)
-    print("Encrypted for first time")
-    decrypt(key)
-    print("Decrypted to write")
+    total_pts_byte = binascii.unhexlify(total_pts_hex.strip())
+    total_pts = total_pts_byte.decode()
+    if enable_debugging: 
+        debug_print("total_pts decrypted to : '" + total_pts + "'")
 
-    #writing pts to txt
-    global pts_gained    
-    total_pts_int = int(total_pts)
-    total_pts_int+=pts_gained
-        
-    with open('points.txt', 'w+') as pts_file:
-        pts_file.write(str(total_pts_int))
+    #adding pts together
+    global pts_gained
+    total_pts = int(''.join(filter(str.isdigit, total_pts)))
+    if enable_debugging:
+        debug_print("Fetched int " + str(total_pts) + " from total_pts")
+    total_pts+=pts_gained
+
+    total_pts = "Current Points : " + str(total_pts)
+    #printing pts at end of each turn. will maybe add pts difference compared to last turn
+    print(total_pts)
 
     #encrypting pts
-    encrypt(key)
-    print("Encrypted after writing")
-    
+    total_pts = total_pts.encode()
+    if enable_debugging:
+        debug_print(str(total_pts))
+    total_pts = binascii.hexlify(total_pts)
+    if enable_debugging:
+        debug_print(str(total_pts))
+    #remove the b'' from total_pts (it gets it when it's encoded)
+    total_pts = total_pts.decode()
+    if enable_debugging:
+        debug_print("Cleaned total_points : " + str(total_pts) + " (new value)")
 
+    with open('points.txt', 'w+') as pts_file:
+        pts_file.write(str(total_pts))
+    if enable_debugging:
+        debug_print("Wrote " + str(total_pts) + " to points.txt")
+    
 
 def main():
     read_config()
