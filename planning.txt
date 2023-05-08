@@ -28,3 +28,9 @@ Have some new ideas for user points, be for theme we need a welcome page
 For a very basic points system we can award +5 pts for a correct answer and -3 pts for an incorrect answer
   - I do want to improve this later on though with mathematical calculations and giving snippets difficulty
   ratings.
+
+Encryption ideas (since it's not really working)
+  - Check if pts string is encrypted
+    - If not encrypted, encrypt it for first time
+  - Decrypt string and add new pts
+  - Encrypt again and store in file

@@ -159,18 +159,27 @@ def decrypt(key):
     with open('points.txt', 'wb') as pts_file:
         pts_file.write(decrypted_data)
     
+def generate_and_return_key():
+    key = Fernet.generate_key()
+    with open('points.key', 'wb') as key_file:
+        key_file.write(key)
+
+    return open('points.key', 'rb').read()
 
 def points_system():
-    key = Fernet.generate_key()
+    
+    key = generate_and_return_key()
     
     with open('points.txt', 'r+') as pts_file:
         total_pts = pts_file.read()
 
 
     #decrypt pts
-    #if total_pts == 0 or "0":
-        #encrypt(key)
-    #decrypt(key)
+    #if isinstance(total_pts, int):
+    encrypt(key)
+    print("Encrypted for first time")
+    decrypt(key)
+    print("Decrypted to write")
 
     #writing pts to txt
     global pts_gained    
@@ -181,7 +190,8 @@ def points_system():
         pts_file.write(str(total_pts_int))
 
     #encrypting pts
-    #encrypt(key)
+    encrypt(key)
+    print("Encrypted after writing")
     
 
 
