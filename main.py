@@ -144,15 +144,15 @@ def read_config():
 def points_system():
     
     with open('points.txt', 'r+') as pts_file:
-        total_pts_hex = pts_file.read()
+        total_pts = pts_file.read()
     if enable_debugging:
-        debug_print("Hex : " + total_pts_hex.strip())
-        debug_print("Lenght of hex (unstripped) : " + str(len(total_pts_hex)))
-        debug_print("Lenght of hex (stripped) : " + str(len(total_pts_hex.strip())))
+        debug_print("Hex : " + total_pts.strip())
+        debug_print("Lenght of hex (unstripped) : " + str(len(total_pts)))
+        debug_print("Lenght of hex (stripped) : " + str(len(total_pts.strip())))
 
     #decrypt pts
-    total_pts_byte = binascii.unhexlify(total_pts_hex.strip())
-    total_pts = total_pts_byte.decode()
+    total_pts = binascii.unhexlify(total_pts.strip())
+    total_pts = total_pts.decode()
     if enable_debugging: 
         debug_print("total_pts decrypted to : '" + total_pts + "'")
 
