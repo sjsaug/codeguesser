@@ -81,13 +81,15 @@ def print_snippet():
 
 def check_answer():
     global pts_gained
+    global pts_lost
     pts_gained = 0
+    pts_lost = 0
     user_answer = input("What language was that code snippet written in? (options : python | cpp | js | react | css | rust | c# | go | lua | php)\n")
     if user_answer == language:
         pts_gained+=5
         print("Correct, %s was the correct language!" % language)
     else:
-        pts_gained-=3
+        pts_lost+=3
         print("You got it wrong. The correct answer was %s" % language)
 
 
@@ -158,10 +160,22 @@ def points_system():
 
     #adding pts together
     global pts_gained
+    global pts_lost
     total_pts = int(''.join(filter(str.isdigit, total_pts)))
     if enable_debugging:
         debug_print("Fetched int " + str(total_pts) + " from total_pts")
-    total_pts+=pts_gained
+    
+    #ideal situation where pts gained is positive
+    if pts_gained > 0: #if pts gained is positive then add pts gained to total pts
+        total_pts+=pts_gained #example of above is if pts gained is 5 and total pts is 2 then we end up with 7
+
+    #another situation where pts lost is more than total pts
+    if pts_lost > total_pts: #if pts lost if more than total pts then subtract total pts from total pts which gives us 0
+        total_pts-=total_pts #example of above if statement is if total pts is 2 and pts lost is more than 2 (ex. 3) then we end up with 0
+
+    #common situation where pts lost is below or equal to total pts
+    if pts_lost <= total_pts: #if pts lost is below or equal to total pts then subtract pts lost from total pts
+        total_pts-=pts_lost #example of above is if pts lost is 3 and total pts is 3 then we end up with 0 
 
     total_pts = "Current Points : " + str(total_pts)
     #printing pts at end of each turn. will maybe add pts difference compared to last turn

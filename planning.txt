@@ -20,4 +20,3 @@ Would be nice to have a welcome page with options to 1. check points or 2. start
 For a very basic points system we can award +5 pts for a correct answer and -3 pts for an incorrect answer
   - I do want to improve this later on though with mathematical calculations and giving snippets difficulty
   ratings.
-  - I need to make it so if you have 1 point it won't subtract 2 points so we won't go into the negatives as well as if as 0 points don't subtract any more points
