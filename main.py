@@ -79,6 +79,14 @@ def print_snippet():
     print(Style.RESET_ALL)
     #print(*code_lines, sep='\n') #alternative method to above but compatability issues with printing colored text
 
+def calculate_pts_gained():
+    if enable_debugging:
+        debug_print("Placeholder [calculate_pts_gained]")
+
+def calculate_pts_lost():
+    if enable_debugging:
+        debug_print("Placeholder [calculate_pts_lost]")
+
 def check_answer():
     global pts_gained
     global pts_lost
@@ -133,6 +141,13 @@ def read_config():
         enable_debugging = False
 
     #SETTINGS
+    
+    global start_screen_check
+    global start_screen
+    start_screen_check = settings_options['start_screen']
+    if start_screen_check == "True":
+        start_screen = True
+
     global viewing_lenght
     viewing_lenght = settings_options['viewing_timer_lenght']
 
@@ -142,6 +157,15 @@ def read_config():
     global snippet_color
     snippet_color = settings_options['snippet_text_color']
 
+def start_screen_fn():
+    global start_screen_choice
+    print("1. Start Game\n 2. Check Points")
+    start_screen_choice = 0
+    input(start_screen_choice)
+    if start_screen_choice == 1:
+        return
+    if start_screen_choice == 2:
+        points_system()
 
 def points_system():
     
@@ -157,46 +181,51 @@ def points_system():
     total_pts = total_pts.decode()
     if enable_debugging: 
         debug_print("total_pts decrypted to : '" + total_pts + "'")
-
-    #adding pts together
-    global pts_gained
-    global pts_lost
-    total_pts = int(''.join(filter(str.isdigit, total_pts)))
-    if enable_debugging:
-        debug_print("Fetched int " + str(total_pts) + " from total_pts")
     
-    #ideal situation where pts gained is positive
-    if pts_gained > 0: #if pts gained is positive then add pts gained to total pts
-        total_pts+=pts_gained #example of above is if pts gained is 5 and total pts is 2 then we end up with 7
 
-    #another situation where pts lost is more than total pts
-    if pts_lost > total_pts: #if pts lost if more than total pts then subtract total pts from total pts which gives us 0
-        total_pts-=total_pts #example of above if statement is if total pts is 2 and pts lost is more than 2 (ex. 3) then we end up with 0
+    if start_screen_choice == 1:
+        #adding pts together
+        global pts_gained
+        global pts_lost
+        total_pts = int(''.join(filter(str.isdigit, total_pts)))
+        if enable_debugging:
+            debug_print("Fetched int " + str(total_pts) + " from total_pts")
+        
+        #ideal situation where pts gained is positive
+        if pts_gained > 0: #if pts gained is positive then add pts gained to total pts
+            total_pts+=pts_gained #example of above is if pts gained is 5 and total pts is 2 then we end up with 7
 
-    #common situation where pts lost is below or equal to total pts
-    if pts_lost <= total_pts: #if pts lost is below or equal to total pts then subtract pts lost from total pts
-        total_pts-=pts_lost #example of above is if pts lost is 3 and total pts is 3 then we end up with 0 
+        #another situation where pts lost is more than total pts
+        if pts_lost > total_pts: #if pts lost if more than total pts then subtract total pts from total pts which gives us 0
+            total_pts-=total_pts #example of above if statement is if total pts is 2 and pts lost is more than 2 (ex. 3) then we end up with 0
 
-    total_pts = "Current Points : " + str(total_pts)
-    #printing pts at end of each turn. will maybe add pts difference compared to last turn
-    print(total_pts)
+        #common situation where pts lost is below or equal to total pts
+        if pts_lost <= total_pts: #if pts lost is below or equal to total pts then subtract pts lost from total pts
+            total_pts-=pts_lost #example of above is if pts lost is 3 and total pts is 3 then we end up with 0 
 
-    #encrypting pts
-    total_pts = total_pts.encode()
-    if enable_debugging:
-        debug_print(str(total_pts))
-    total_pts = binascii.hexlify(total_pts)
-    if enable_debugging:
-        debug_print(str(total_pts))
-    #remove the b'' from total_pts (it gets it when it's encoded)
-    total_pts = total_pts.decode()
-    if enable_debugging:
-        debug_print("Cleaned total_points : " + str(total_pts) + " (new value)")
+        total_pts = "Current Points : " + str(total_pts)
+        #printing pts at end of each turn. will maybe add pts difference compared to last turn
+        print(total_pts)
 
-    with open('points.txt', 'w+') as pts_file:
-        pts_file.write(str(total_pts))
-    if enable_debugging:
-        debug_print("Wrote " + str(total_pts) + " to points.txt")
+        #encrypting pts
+        total_pts = total_pts.encode()
+        if enable_debugging:
+            debug_print(str(total_pts))
+        total_pts = binascii.hexlify(total_pts)
+        if enable_debugging:
+            debug_print(str(total_pts))
+        #remove the b'' from total_pts (it gets it when it's encoded)
+        total_pts = total_pts.decode()
+        if enable_debugging:
+            debug_print("Cleaned total_points : " + str(total_pts) + " (new value)")
+
+        with open('points.txt', 'w+') as pts_file:
+            pts_file.write(str(total_pts))
+        if enable_debugging:
+            debug_print("Wrote " + str(total_pts) + " to points.txt")
+
+    if start_screen_choice == 2:
+        return total_pts
     
 
 def main():
@@ -216,12 +245,17 @@ def startup():
     num_curr_turns = 0
     if num_turns == "infinite":
         while True:
+            if start_screen:
+                start_screen_fn()
             if __name__ == "__main__":
+                
                 main()
     if num_turns != "infinite":
         while num_curr_turns < int(num_turns):
             if __name__ == "__main__":
                 num_curr_turns += 1
+                if start_screen:
+                    start_screen_fn()
                 main()
 
 
